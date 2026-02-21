@@ -1,2 +1,2 @@
 # Soil-Moisture-Monitoring-with-Automatic-Water-Pump-Control-Using-Arduino
-The Soil Moisture Monitoring with Automatic Water Pump Control Using Arduino is an intelligent irrigation system designed to automatically water plants based on the moisture level present in the soil. 
+The Soil Moisture Monitoring with Automatic Water Pump Control Using Arduino is an intelligent irrigation system designed to automatically water plants based on the moisture level present in the soil. This system uses an Arduino Uno as the main controller, which continuously monitors soil moisture using a soil moisture sensor and activates a water pump whenever the soil becomes dry.
