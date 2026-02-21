@@ -1,0 +1,49 @@
+#include <Wire.h> 
+#include <LiquidCrystal_I2C.h>
+
+// Set the LCD address to 0x27 (most common) or 0x3F
+LiquidCrystal_I2C lcd(0x27, 16, 2); 
+
+const int sensorPin = A0;  
+const int relayPin = 8;    
+const int dryThreshold = 35; // Change this to set when the pump starts
+
+void setup() {
+  pinMode(relayPin, OUTPUT);
+  digitalWrite(relayPin, HIGH); // Keeps relay OFF at startup
+  
+  lcd.init();
+  lcd.backlight();
+  lcd.setCursor(0, 0);
+  lcd.print("Smart Garden");
+  lcd.setCursor(0, 1);
+  lcd.print("Initializing...");
+  delay(2000);
+  lcd.clear();
+}
+
+void loop() {
+  int rawValue = analogRead(sensorPin);
+  
+  // Map raw values (0-1023) to 0-100%. 
+  // 1023 is dry air, 0 is pure water.
+  int moisturePercent = map(rawValue, 1023, 0, 0, 100);
+
+  // Line 1: Display Humidity
+  lcd.setCursor(0, 0);
+  lcd.print("Moisture: ");
+  lcd.print(moisturePercent);
+  lcd.print("%   "); // Clear trailing digits
+
+  // Line 2: Pump Status
+  lcd.setCursor(0, 1);
+  if (moisturePercent < dryThreshold) {
+    lcd.print("PUMP: [ON]     ");
+    digitalWrite(relayPin, LOW); // Trigger relay
+  } else {
+    lcd.print("PUMP: [OFF]    ");
+    digitalWrite(relayPin, HIGH); // Stop relay
+  }
+
+  delay(500); // Faster updates for smoother reading
+}
